@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public class ManagerProductType implements ICrud<ProductType> {
     public MenuAdmin menuAdmin;
-    String path = "/Users/HieuHip/IdeaProjects/CaseStudy/src/product_type.txt";
+    String path = "product_type.txt";
     int id;
     public ManagerProductType(MenuAdmin menuAdmin) {
         this.menuAdmin = menuAdmin;
@@ -63,6 +63,7 @@ public class ManagerProductType implements ICrud<ProductType> {
                 return choiceProductTypeName;
             }
         }else {
+            System.out.println("~@~@~@~@~ There is no product type ~@~@~@~@~");
             System.out.println("~@~@~@~@~ Please create new one ~@~@~@~@~");
             choiceProductTypeName = create(scanner);
             listProductType.add(choiceProductTypeName);

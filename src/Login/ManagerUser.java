@@ -9,7 +9,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class ManagerUser implements ICrud<User> {
-    String path = "/Users/HieuHip/IdeaProjects/CaseStudy/src/User.txt";
+    String path = "User.txt";
     int id;
     private final ArrayList<User> listUser;
     MenuUser menuUser;

@@ -10,25 +10,29 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class ManagerProduct implements ICrud<Product> {
-    String path1 = "/Users/HieuHip/IdeaProjects/CaseStudy/src/product.txt";
-    String path2 = "/Users/HieuHip/IdeaProjects/CaseStudy/src/cart_product.txt";
+    String path1 = "product.txt";
+    String path2 = "cart_product.txt";
     ManagerProductType managerProductType;
     private String inPattern = "^[A-Z a-z 0-9]{3,15}$";
     private String datePattern = "^[0-9]{1,2}\\/[0-9]{1,2}\\/[0-9]{4}$";
     public ArrayList<Product> listProduct;
-    public ArrayList<Product> listBuyProduct=new ArrayList<>();
+    public ArrayList<Product> listBuyProduct = new ArrayList<>();
     private String numberForm = "^[0-9]%";
+    private String choicePattern = "^[1-2]$";
     int id;
     MenuAdmin menuAdmin;
-    public ManagerProduct(ManagerProductType managerProductType,MenuAdmin menuAdmin) {
+
+    public ManagerProduct(ManagerProductType managerProductType, MenuAdmin menuAdmin) {
         listProduct = new ArrayList<>();
         listProduct = read(path1);
         listBuyProduct = read(path2);
-        if(!listProduct.isEmpty()) {
+        if (!listProduct.isEmpty()) {
             id = listProduct.get(listProduct.size() - 1).getId();
-        } else{id=0;}
-        this.managerProductType=managerProductType;
-        this.menuAdmin=menuAdmin;
+        } else {
+            id = 0;
+        }
+        this.managerProductType = managerProductType;
+        this.menuAdmin = menuAdmin;
     }
 
     public boolean regexInPattern(String input, String pattern) {
@@ -36,6 +40,10 @@ public class ManagerProduct implements ICrud<Product> {
     }
 
     public boolean regexDatePattern(String input, String pattern) {
+        return Pattern.compile(pattern).matcher(input).matches();
+    }
+
+    public boolean regexChoicePattern(String input, String pattern) {
         return Pattern.compile(pattern).matcher(input).matches();
     }
 
@@ -93,37 +101,36 @@ public class ManagerProduct implements ICrud<Product> {
             }
         } while (!check);
         check = false;
+        System.out.println("Please enter your product type:");
         productType = managerProductType.choiceProductType(scanner);
+        int choice = -1;
         do {
             System.out.println("Please choice category of product:  ");
             System.out.println("1.Drugs");
             System.out.println("2.Powder Milk");
             System.out.println("^-^-^-^-^-^-^-^-^-^");
             System.out.println("Enter your choice: ");
-            try {
-                int choice = Integer.parseInt(scanner.nextLine());
+            String choiceInput = scanner.nextLine();
+            if (regexChoicePattern(choiceInput, choicePattern)) {
+                choice = Integer.parseInt(choiceInput);
                 check = true;
-                switch (choice) {
-                    case 1:
-                        System.out.println("Please enter amount of tablets:");
-                        int tablets = Integer.parseInt(scanner.nextLine());
-                        product = new Drugs(id, name, brand, price, date, productType, tablets);
-                        System.out.println("*-*Product had been added*-*\n*-*Please press 4 to show all of your product*-*");
-                        return product;
-                    case 2:
-                        System.out.println("Please enter weight of powder milk:");
-                        int weight = Integer.parseInt(scanner.nextLine());
-                        product = new PowderMilk(id, name, brand, price, date, productType, weight);
+            } else {
+                System.out.println(" ~@~@~@~@~ Please choose 1 or 2 ~@~@~@~@~");
+            }
 
-                        System.out.println("~@~@~@~@~@~@~ Product had been added~@~@~@~@~@~@~\n------- Please press 4 to show all your product --------");
-                        return product;
-                }
-                if(choice>2){
-                    System.out.println(" -------- Can not determined your choice -------");
-                    System.out.println(" -------- Please choose again -------");
-                }
-            } catch (NumberFormatException a) {
-                a.printStackTrace();
+            switch (choice) {
+                case 1:
+                    System.out.println("Please enter amount of tablets:");
+                    int tablets = Integer.parseInt(scanner.nextLine());
+                    product = new Drugs(id, name, brand, price, date, productType, tablets);
+                    System.out.println("*-*Product had been added*-*\n*-*Please press 4 to show all of your product*-*");
+                    break;
+                case 2:
+                    System.out.println("Please enter weight of powder milk:");
+                    int weight = Integer.parseInt(scanner.nextLine());
+                    product = new PowderMilk(id, name, brand, price, date, productType, weight);
+                    System.out.println("~@~@~@~@~@~@~ Product had been added~@~@~@~@~@~@~\n------- Please press 4 to show all your product --------");
+                    break;
             }
 
         } while (!check);
@@ -142,7 +149,7 @@ public class ManagerProduct implements ICrud<Product> {
     public void edit(Scanner scanner) {
 
         boolean frag = false;
-        Product product=null;
+        Product product = null;
         Drugs drugs;
         try {
             System.out.println("Enter id of product you want to edit:");
@@ -205,7 +212,7 @@ public class ManagerProduct implements ICrud<Product> {
                     a.setProductType(productType1);
                 }
             }
-            write(path1,listProduct);
+            write(path1, listProduct);
         } catch (NumberFormatException a) {
             a.printStackTrace();
         }
@@ -226,12 +233,12 @@ public class ManagerProduct implements ICrud<Product> {
                         break;
                     }
                 }
-                if(!check){
-                    System.out.println("ID not found");
+                if (!check) {
+                    System.out.println("~@~@~@~@~ ID not found ~@~@~@~@~");
                     return;
                 }
                 listProduct.remove(product1);
-                System.out.println("Delete successful!!!");
+                System.out.println("~@~@~@~ Delete successful ~@~@~@~");
                 write(path1, listProduct);
             } catch (NumberFormatException e) {
                 e.printStackTrace();
@@ -243,11 +250,11 @@ public class ManagerProduct implements ICrud<Product> {
     public void displayProduct() {
         for (Product a : listProduct) {
             System.out.println(a);
-            }
+        }
         if (listProduct.isEmpty()) {
             System.out.println("There is no product in shop!!\nPlease create new one and comeback then! ");
         }
-        }
+    }
 
     public void displayProductByDrugs() {
         boolean check = false;
@@ -258,7 +265,7 @@ public class ManagerProduct implements ICrud<Product> {
                 check = true;
             }
         }
-        if(!check){
+        if (!check) {
             System.out.println("~@~@~ There is no product of drug in your shop ~@~@~");
         }
     }
@@ -272,7 +279,7 @@ public class ManagerProduct implements ICrud<Product> {
                 frag = true;
             }
         }
-        if(!frag){
+        if (!frag) {
             System.out.println("There is no product of powder milk in your shop");
         }
     }
@@ -287,14 +294,14 @@ public class ManagerProduct implements ICrud<Product> {
                 flag = true;
             }
         }
-        flag= false;
+        flag = false;
         for (Product c : listProduct) {
             if (c.getPrice() == maxPrice) {
                 System.out.println(c);
                 flag = true;
             }
         }
-        if(!flag){
+        if (!flag) {
             System.out.println("~@~@~ There is no product have highest price in shop ~@~@~");
         }
     }
@@ -309,14 +316,14 @@ public class ManagerProduct implements ICrud<Product> {
                 check = true;
             }
         }
-        check= false;
+        check = false;
         for (Product b : listProduct) {
             if (b.getPrice() == minPrice) {
                 System.out.println(b);
                 check = true;
             }
         }
-        if(!check){
+        if (!check) {
             System.out.println("~@~@~ There is no product have lowest product in shop ~@~@~");
         }
     }
@@ -335,21 +342,21 @@ public class ManagerProduct implements ICrud<Product> {
                 check = true;
             }
         }
-        if(!check){
+        if (!check) {
             System.out.println("*-*-*-*There is no product in range*-*-*-*");
         }
     }
 
     public ArrayList<Product> buyProduct(String path, Scanner scanner) {
 
-            System.out.println("Enter id of product you want to buy:");
-            int productId = Integer.parseInt(scanner.nextLine());
-            for (Product a : listProduct) {
-                if (a.getId() == productId) {
-                    listBuyProduct.add(a);
-                    write(path, listBuyProduct);
-                }
+        System.out.println("Enter id of product you want to buy:");
+        int productId = Integer.parseInt(scanner.nextLine());
+        for (Product a : listProduct) {
+            if (a.getId() == productId) {
+                listBuyProduct.add(a);
+                write(path, listBuyProduct);
             }
+        }
         System.out.println("        ~~~~~~~Thanks!~~~~~~~\n ~@~@~ Your product have been added to your cart ~@~@~");
         return listBuyProduct;
     }
@@ -360,7 +367,7 @@ public class ManagerProduct implements ICrud<Product> {
         for (Product a : listBuyProduct) {
             System.out.println(a);
         }
-        if(listBuyProduct.isEmpty()){
+        if (listBuyProduct.isEmpty()) {
             System.out.println("*-*-* There is no product in your cart *-*-*");
         }
     }
@@ -398,7 +405,7 @@ public class ManagerProduct implements ICrud<Product> {
                     displayProduct();
                     break;
             }
-            if(choice>4){
+            if (choice > 4) {
                 System.out.println(" ------- Can not determined your choice -------");
                 System.out.println(" ------- Please choose again -------");
             }
@@ -437,31 +444,32 @@ public class ManagerProduct implements ICrud<Product> {
 
         return listProduct;
     }
-public void deleteProductCart(Scanner scanner){
-    boolean check = false;
-    displayCart();
-    System.out.println("        -------------------");
-    Product productCart=null;
-    System.out.println("Enter id of product in your cart you want to delete:");
-    try{
-        int productTypeId=Integer.parseInt(scanner.nextLine());
-        for (Product a:listBuyProduct) {
-            if(productTypeId==a.getId()){
-                productCart=a;
-                listBuyProduct.remove(productCart);
-                check = true;
-                System.out.println("------------- Deleted----------");
-                break;
+
+    public void deleteProductCart(Scanner scanner) {
+        boolean check = false;
+        displayCart();
+        System.out.println("        -------------------");
+        Product productCart = null;
+        System.out.println("Enter id of product in your cart you want to delete:");
+        try {
+            int productTypeId = Integer.parseInt(scanner.nextLine());
+            for (Product a : listBuyProduct) {
+                if (productTypeId == a.getId()) {
+                    productCart = a;
+                    listBuyProduct.remove(productCart);
+                    check = true;
+                    System.out.println("------------- Deleted----------");
+                    break;
+                }
+
             }
+            if (!check) {
+                System.out.println("~@~@~@~@~ ID not found ~@~@~@~@~");
+            }
+            write(path2, listBuyProduct);
+        } catch (NumberFormatException a) {
+            a.printStackTrace();
+        }
 
-        }
-        if(!check){
-            System.out.println("~@~@~@~@~ ID not found ~@~@~@~@~");
-        }
-        write(path2,listBuyProduct);
-    }catch (NumberFormatException a){
-        a.printStackTrace();
     }
-
-}
 }

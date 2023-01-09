@@ -52,7 +52,7 @@ public class MenuUser {
                         managerProduct.findProductByPrice(scanner);
                         break;
                     case 7:
-                        String path="/Users/HieuHip/IdeaProjects/CaseStudy/src/cart_product.txt";
+                        String path="cart_product.txt";
                         managerProduct.displayProduct();
                         managerProduct.buyProduct(path,scanner);
                         break;
