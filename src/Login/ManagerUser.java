@@ -76,7 +76,7 @@ public class ManagerUser implements ICrud<User> {
         String patternAddress = "^[A-Z a-z 0-9]+$";
         String patternPassword = "^[A-Z][a-zA-Z0-9]{7,10}$";
         String patternAge = "^[15-60]{2}$";
-        String patternName="^[A-Z a-z 0-9]{20}$";
+        String patternName="^[A-Z a-z 0-9]{3,20}$";
         String address;
         String password;
         String phoneNumber;
@@ -87,18 +87,18 @@ public class ManagerUser implements ICrud<User> {
         int age = 0;
         id++;
         do{
-            System.out.println("Please enter your name:");
+            System.out.println("Please enter your name(3-20 characters):");
              name = scanner.nextLine();
             if(regexName(name,patternName)){
                 check = true;
             }else{
-                System.out.println("-_-_-_-_- Name must be starting with a  -_-_-_-_");
+                System.out.println("-_-_-_-_- Name must be starting with a letter  -_-_-_-_");
             }
         }while (!check);
         check = false;
 
         do{
-            System.out.println("Please enter your age:");
+            System.out.println("Please enter your age(15-60):");
            String ageInput = scanner.nextLine();
             if(regexAge(ageInput,patternAge)){
                 age = Integer.parseInt(ageInput);
@@ -115,24 +115,24 @@ public class ManagerUser implements ICrud<User> {
             if (regexAddress(address, patternAddress)) {
                 check = true;
             } else {
-                System.out.println("Wrong address format!\nPlease re-enter!");
+                System.out.println("~@~@~@~@~ Wrong address format ~@~@~@~@~\n------ Please re-enter --------");
             }
         } while (!check);
         check = false;
         System.out.println("Please enter your gender");
         String gender = checkGender(scanner);
         do {
-            System.out.println("Please enter your phone number:");
+            System.out.println("Please enter your phone number(10 numbers include 0 at the beginning:");
             phoneNumber = scanner.nextLine();
             if (regexPhoneNumber(phoneNumber, patternPhoneNumber)) {
                 check = true;
             } else {
-                System.out.println("Wrong phone format!\nPlease re-enter!");
+                System.out.println("~@~@~@~@~ Wrong phone format ~@~@~@~@~\n-------- Please re-enter --------");
             }
         } while (!check);
         check = false;
         do {
-            System.out.println("Please enter your gmail:");
+            System.out.println("Please enter your gmail(required @gmail.com at the end):");
             gmail = scanner.nextLine();
             boolean frag = false;
             for (User a : listUser) {
@@ -146,19 +146,19 @@ public class ManagerUser implements ICrud<User> {
                 if (regexGmail(gmail, patternGmail)) {
                     check = true;
                 } else {
-                    System.out.println("Wrong gmail format!\nPlease re-enter!");
+                    System.out.println("~@~@~@~@~@~ Wrong gmail format ~@~@~@~@~@~\n-------- Please re-enter ---------");
                 }
             }
         }
         while (!check);
         check = false;
         do {
-            System.out.println("Please enter your password:");
+            System.out.println("Please enter your password(7-10 character):");
             password = scanner.nextLine();
             if (regexPassword(password, patternPassword)) {
                 check = true;
             } else {
-                System.out.println("Wrong password format!\nPlease re-enter!");
+                System.out.println("~@~@~@~@~@~ Wrong password format ~@~@~@~@~@~\n---------- Please re-enter ----------");
             }
         } while (!check);
         user = new User(id++, name, age, address, gender, phoneNumber, gmail, password);

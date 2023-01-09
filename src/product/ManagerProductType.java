@@ -200,7 +200,7 @@ public class ManagerProductType implements ICrud<ProductType> {
                 case 1:
                     System.out.println("Enter information of product type");
                     add(path,scanner);
-                    System.out.println("*-*-*Create successful*-*-*");
+                    System.out.println("*-*-* Create successful *-*-*");
                     break;
                 case 2:
                     delete(scanner);
