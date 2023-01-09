@@ -2,7 +2,6 @@ package Login;
 
 import Menu.MenuUser;
 import crud.ICrud;
-import jdk.jfr.internal.tool.Main;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -11,12 +10,8 @@ import java.util.regex.Pattern;
 
 public class ManagerUser implements ICrud<User> {
     String path = "/Users/HieuHip/IdeaProjects/CaseStudy/src/User.txt";
-    private String patternGmail = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
-    private String patternPhoneNumber = "^[0][0-9]{9}$";
-    private String patternAddress = "^[A-Z a-z 0-9]+$";
-    private String patternPassword = "^[A-Z][a-zA-Z0-9]{7,10}$";
     int id;
-    private ArrayList<User> listUser;
+    private final ArrayList<User> listUser;
     MenuUser menuUser;
 
     public ManagerUser(MenuUser menuUser) {
@@ -66,21 +61,54 @@ public class ManagerUser implements ICrud<User> {
     public boolean regexPassword(String input, String pattern) {
         return Pattern.compile(pattern).matcher(input).matches();
     }
+    public boolean regexAge(String input, String pattern){
+        return Pattern.compile(pattern).matcher(input).matches();
+    }
+    public boolean regexName(String input,String pattern){
+        return Pattern.compile(pattern).matcher(input).matches();
+    }
 
 
     @Override
     public User create(Scanner scanner) {
+        String patternGmail = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        String patternPhoneNumber = "^[0][0-9]{9}$";
+        String patternAddress = "^[A-Z a-z 0-9]+$";
+        String patternPassword = "^[A-Z][a-zA-Z0-9]{7,10}$";
+        String patternAge = "^[15-60]{2}$";
+        String patternName="^[A-Z a-z 0-9]{20}$";
         String address;
         String password;
         String phoneNumber;
         String gmail;
+        String name;
         User user = null;
         boolean check = false;
+        int age = 0;
         id++;
-        System.out.println("Please enter your name:");
-        String name = scanner.nextLine();
-        System.out.println("Please enter your age:");
-        int age = Integer.parseInt(scanner.nextLine());
+        do{
+            System.out.println("Please enter your name:");
+             name = scanner.nextLine();
+            if(regexName(name,patternName)){
+                check = true;
+            }else{
+                System.out.println("-_-_-_-_- Name must be starting with a  -_-_-_-_");
+            }
+        }while (!check);
+        check = false;
+
+        do{
+            System.out.println("Please enter your age:");
+           String ageInput = scanner.nextLine();
+            if(regexAge(ageInput,patternAge)){
+                age = Integer.parseInt(ageInput);
+                check = true;
+            }else{
+                System.out.println("-_-_-_-_- Age must be number between 15-60 -_-_-_-_");
+            }
+        }while (!check);
+        check = false;
+
         do {
             System.out.println("Please enter your address:");
             address = scanner.nextLine();
@@ -164,7 +192,6 @@ public class ManagerUser implements ICrud<User> {
     }
 
     public void checkLogin(Scanner scanner) {
-        String path = "/Users/HieuHip/IdeaProjects/CaseStudy/src/User.txt";
         int count = 3;
         int count1 = 3;
         int count2 = 3;
@@ -288,7 +315,3 @@ public class ManagerUser implements ICrud<User> {
     }
 
 }
-
-// map<String, String> a = new Hashmap<>();
-// pubic void login (){
-// String

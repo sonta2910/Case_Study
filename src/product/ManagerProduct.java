@@ -77,7 +77,7 @@ public class ManagerProduct implements ICrud<Product> {
                 price = Double.parseDouble(scanner.nextLine());
                 check = true;
             } catch (NumberFormatException a) {
-                a.getMessage();
+                a.printStackTrace();
                 System.out.println("-_-_-_-_- Product price must be number -_-_-_-_\n-_-_-_-_- Please re enter -_-_-_-_-");
             }
 
@@ -117,6 +117,10 @@ public class ManagerProduct implements ICrud<Product> {
 
                         System.out.println("~@~@~@~@~@~@~ Product had been added~@~@~@~@~@~@~\n------- Please press 4 to show all your product --------");
                         return product;
+                }
+                if(choice>2){
+                    System.out.println(" -------- Can not determined your choice -------");
+                    System.out.println(" -------- Please choose again -------");
                 }
             } catch (NumberFormatException a) {
                 a.printStackTrace();

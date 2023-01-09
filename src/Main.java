@@ -19,7 +19,8 @@ public class Main {
         ManagerUser managerUser = new ManagerUser(menuUser);
         int choice=-1;
 
-        do {
+    do {
+        try{
             System.out.println("*-*-*-*Welcome to SonDepTrai MegaMart*-*-*-*");
             System.out.println("How do you want to log in?");
             System.out.println("1.Admin  ");
@@ -39,6 +40,12 @@ public class Main {
                 System.out.println(" -------- Can not determined your choice -------");
                 System.out.println(" -------- Please choose again -------");
             }
-        }while (choice!=0);
-    }
+        }catch ( NumberFormatException e){
+            e.getMessage();
+            System.out.println("-------- Can not determined your choice -------");
+        }
+
+    }while (choice!=0);
 }
+}
+
